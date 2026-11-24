@@ -1,0 +1,126 @@
+[
+  {
+    "场景": "正常 200",
+    "model": "fault-ok",
+    "期望": "一次成功，attempts=1",
+    "attempts": 1,
+    "客户端等待": [],
+    "服务端间隔": [],
+    "耗时_s": 0.64,
+    "finish_reason": "stop",
+    "error": "",
+    "output": "正常响应"
+  },
+  {
+    "场景": "前 2 次 429 后成功",
+    "model": "fault-flaky-2",
+    "期望": "attempts=3，最终拿到内容",
+    "attempts": 3,
+    "客户端等待": [
+      1.19,
+      2.91
+    ],
+    "服务端间隔": [
+      1.2,
+      2.91
+    ],
+    "耗时_s": 4.13,
+    "finish_reason": "stop",
+    "error": "",
+    "output": "第 3 次请求成功"
+  },
+  {
+    "场景": "持续 429",
+    "model": "fault-429",
+    "期望": "重试到上限，落库 error",
+    "attempts": 4,
+    "客户端等待": [
+      2.0,
+      2.41,
+      4.27,
+      8.0
+    ],
+    "服务端间隔": [
+      2.0,
+      2.42,
+      4.28
+    ],
+    "耗时_s": 8.71,
+    "finish_reason": "error",
+    "error": "RateLimitError: Error code: 429 - rate limited",
+    "output": ""
+  },
+  {
+    "场景": "真超时 3s vs 1s 上限",
+    "model": "fault-slow",
+    "期望": "每次 1s 断开，重试后仍失败",
+    "attempts": 4,
+    "客户端等待": [
+      1.23,
+      2.06,
+      4.07,
+      8.76
+    ],
+    "服务端间隔": [
+      2.24,
+      3.07,
+      5.08
+    ],
+    "耗时_s": 11.42,
+    "finish_reason": "error",
+    "error": "APITimeoutError: Request timed out.",
+    "output": ""
+  },
+  {
+    "场景": "持续 500",
+    "model": "fault-500",
+    "期望": "重试到上限，落库 error",
+    "attempts": 4,
+    "客户端等待": [
+      1.48,
+      2.01,
+      4.78,
+      8.59
+    ],
+    "服务端间隔": [
+      1.49,
+      2.01,
+      4.78
+    ],
+    "耗时_s": 8.3,
+    "finish_reason": "error",
+    "error": "InternalServerError: Error code: 500 - boom",
+    "output": ""
+  },
+  {
+    "场景": "200 但 body 不是 JSON",
+    "model": "fault-badjson",
+    "期望": "不崩，落库 error",
+    "attempts": 1,
+    "客户端等待": [],
+    "服务端间隔": [],
+    "耗时_s": 0.01,
+    "finish_reason": "error",
+    "error": "JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+    "output": ""
+  },
+  {
+    "场景": "真超时 + 预算 5s 截断",
+    "model": "fault-slow",
+    "期望": "预算先到，attempts<4",
+    "attempts": 3,
+    "客户端等待": [
+      1.78,
+      2.15,
+      4.43
+    ],
+    "服务端间隔": [
+      2.79,
+      3.15
+    ],
+    "耗时_s": 6.97,
+    "finish_reason": "error",
+    "error": "APITimeoutError: Request timed out.",
+    "output": ""
+  }
+]

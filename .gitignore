@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# 机密：绝不提交
+.env
+
+# 课程材料（第三方内容 + 7.7MB 图片，不随项目入库）
+docs/course/
+
+# 评测产物：默认忽略（每次跑都会变），只留两份当证据
+results/*.jsonl
+results/*.parquet
+!results/calls.jsonl
+!results/d3_faults.json
+!results/.gitkeep
+
+# 编辑器
+.vscode/
+.idea/
+
+# 临时备份（改代码前手动 Copy-Item 的）
+*.bak
+
+# 调试草稿（一次性诊断脚本，不进库）
+scratch/
